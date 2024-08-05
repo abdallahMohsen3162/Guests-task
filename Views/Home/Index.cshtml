@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    bool x = ViewBag.x != null ? ViewBag.x : false;
+}
+
+<div class="text-center">
+    @if (x)
+    {
+        <hi>true</hi>
+    }
+</div>

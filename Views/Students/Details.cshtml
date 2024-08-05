@@ -1,0 +1,19 @@
+﻿
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<h1>Student Details</h1>
+
+<div>
+    <h2>@ViewBag.student.Name</h2>
+    <p>Age: @ViewBag.student.Age</p>
+    <p>Email: @ViewBag.student.Email</p>
+    <p>Phone: @ViewBag.student.Phone</p>
+    <p>Address: @ViewBag.student.Address</p>
+
+    
+</div>
+
+<a asp-controller="Students" asp-action="Index" class="btn btn-secondary">Back to List</a>

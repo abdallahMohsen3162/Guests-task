@@ -1,0 +1,45 @@
+﻿@model IEnumerable<hendi.Models.Entities.Student>
+
+@{
+    ViewData["Title"] = "Students";
+    var count = ViewBag.Count;
+}
+
+<h1>Students</h1>
+<p>Number of Students: <strong>@count</strong></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Id</td>
+                <td>@student.Name</td>
+                <td>@student.Age</td>
+                <td>@student.Email</td>
+                <td>@student.Phone</td>
+                <td>@student.Address</td>
+                <td>
+                    <a asp-controller="Students" asp-action="Details" asp-route-id="@student.Id" class="btn btn-info">Details</a>
+                    <a asp-controller="Students" asp-action="Edit" asp-route-id="@student.Id" class="btn btn-warning">Edit</a>
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@student.Id" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Students" asp-action="Add" class="btn btn-primary">Add New Student</a>
