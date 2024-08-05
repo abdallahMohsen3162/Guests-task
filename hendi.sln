@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hendi - Backup", "hendi - Backup.csproj", "{7F384748-EB92-48BA-A4C0-184E47EC9778}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hendi", "hendi.csproj", "{C11A5632-8063-460F-8CEE-1F3302397769}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F384748-EB92-48BA-A4C0-184E47EC9778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F384748-EB92-48BA-A4C0-184E47EC9778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F384748-EB92-48BA-A4C0-184E47EC9778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F384748-EB92-48BA-A4C0-184E47EC9778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C11A5632-8063-460F-8CEE-1F3302397769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11A5632-8063-460F-8CEE-1F3302397769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11A5632-8063-460F-8CEE-1F3302397769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11A5632-8063-460F-8CEE-1F3302397769}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB5705B3-ED5E-4058-BF48-D46CDDF7C2E8}
+	EndGlobalSection
+EndGlobal
