@@ -29,7 +29,7 @@ namespace hendi.Controllers
             return View();
         }
 
-        // POST: Guests/Add
+
         [HttpPost]
         public IActionResult Add(Guest model)
         {
