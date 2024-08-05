@@ -19,11 +19,6 @@ namespace hendi.Models.Validation
                 var today = DateOnly.FromDateTime(DateTime.Today);
                 int age = today.Year - birthdate.Year;
 
-                // Adjust age if the birthdate has not yet occurred this year
-                if (birthdate > today.AddYears(-age))
-                {
-                    age--;
-                }
 
                 if (age >= _minimumAge)
                 {
