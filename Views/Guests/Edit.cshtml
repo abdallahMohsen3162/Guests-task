@@ -1,0 +1,57 @@
+﻿@model hendi.Models.ViewModels.GuestViewModel
+
+@{
+    ViewData["Title"] = "Edit Guest";
+    var today = DateTime.Today.ToString("yyyy-MM-dd");
+}
+
+<link href="~/css/font-awesome.css" rel="stylesheet" />
+<h1>
+    Edit Guest <i class="fa fa-edit"></i>
+</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Guest.Id" />
+
+    <div class="form-group">
+        <label asp-for="Guest.Name" class="control-label"></label>
+        <input asp-for="Guest.Name" class="form-control" />
+        <span asp-validation-for="Guest.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.Birthdate" class="control-label"></label>
+        <input asp-for="Guest.Birthdate" type="date" class="form-control" />
+        <span asp-validation-for="Guest.Birthdate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.Email" class="control-label"></label>
+        <input asp-for="Guest.Email" class="form-control" readonly />
+        <span asp-validation-for="Guest.Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.Phone" class="control-label"></label>
+        <input asp-for="Guest.Phone" class="form-control" />
+        <span asp-validation-for="Guest.Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.Password" class="control-label"></label>
+        <input asp-for="Guest.Password" class="form-control" type="password" />
+        <span asp-validation-for="Guest.Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Guest.DateOfAppintment" class="control-label"></label>
+        <input asp-for="Guest.DateOfAppintment" type="date" class="form-control" />
+        <span asp-validation-for="Guest.DateOfAppintment" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Guest.Address" class="control-label"></label>
+        <input asp-for="Guest.Address" class="form-control" />
+        <span asp-validation-for="Guest.Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-save"></i>
+        </button>
+    </div>
+</form>

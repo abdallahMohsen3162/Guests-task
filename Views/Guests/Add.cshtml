@@ -1,12 +1,10 @@
-﻿@model hendi.Models.Entities.Guest
+﻿@model hendi.Models.ViewModels.GuestViewModel
 
 @{
     ViewData["Title"] = "Add Guest";
-    // Get today's date in yyyy-MM-dd format
     var today = DateTime.Today.ToString("yyyy-MM-dd");
-    var guests = ViewBag.guests;
-    
 }
+
 <link href="~/css/font-awesome.css" rel="stylesheet" />
 <h1>
     Add Guest <i class="fa fa-plus"></i>
@@ -14,60 +12,61 @@
 
 <form asp-action="Add" method="post">
     <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="Guest.Name" class="control-label"></label>
+        <input asp-for="Guest.Name" class="form-control" />
+        <span asp-validation-for="Guest.Name" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Birthdate" class="control-label"></label>
-        <input value="@today" asp-for="Birthdate" type="date" class="form-control" />
-        <span asp-validation-for="Birthdate" class="text-danger"></span>
+        <label asp-for="Guest.Birthdate" class="control-label"></label>
+        <input asp-for="Guest.Birthdate" type="date" class="form-control" value="@today" />
+        <span asp-validation-for="Guest.Birthdate" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+        <label asp-for="Guest.Email" class="control-label"></label>
+        <input asp-for="Guest.Email" class="form-control" />
+        <span asp-validation-for="Guest.Email" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Phone" class="control-label"></label>
-        <input type="number" asp-for="Phone" class="form-control" />
-        <span asp-validation-for="Phone" class="text-danger"></span>
+        <label asp-for="Guest.Phone" class="control-label"></label>
+        <input asp-for="Guest.Phone" type="tel" class="form-control" />
+        <span asp-validation-for="Guest.Phone" class="text-danger"></span>
     </div>
-    
+
     <div class="form-group">
-        <label asp-for="Password" class="control-label"></label>
-        <input asp-for="Password" class="form-control" type="password"/>
-        <span asp-validation-for="Password" class="text-danger"></span>
+        <label asp-for="Guest.Password" class="control-label"></label>
+        <input asp-for="Guest.Password" class="form-control" type="password" />
+        <span asp-validation-for="Guest.Password" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label class="control-label">Confirm Password</label>
-        <input name="ConfirmPassword" class="form-control" type="password" />
+        <input  name="confirmPassword" class="form-control" type="password" />
         <button id="show-password" type="button" class="btn btn-dark">
             <i class="fa-regular fa-eye"></i>
         </button>
     </div>
 
+    <div class="form-group">
+        <label asp-for="Guest.DateOfAppintment" class="control-label"></label>
+        <input asp-for="Guest.DateOfAppintment" type="date" class="form-control" value="@today" max="@today" />
+        <span asp-validation-for="Guest.DateOfAppintment" class="text-danger"></span>
+    </div>
 
     <div class="form-group">
-        <label asp-for="DateOfAppintment" class="control-label"></label>
-        <input value="@today" asp-for="DateOfAppintment" type="date" class="form-control" max="@today" />
-        <span asp-validation-for="DateOfAppintment" class="text-danger"></span>
+        <label asp-for="Guest.Address" class="control-label"></label>
+        <input asp-for="Guest.Address" class="form-control" />
+        <span asp-validation-for="Guest.Address" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Address" class="control-label"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
+
     <div class="form-group">
         <button type="submit" class="btn btn-primary">
-            <i class="fa-solid fa-plus"></i>
+            <i class="fa-solid fa-plus"></i> Add Guest
         </button>
     </div>
 </form>
-
-
-
 
 <hr />
 
@@ -80,28 +79,39 @@
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Address</th>
-                <th>Birthdata</th>
-                <th>DateOfAppintment</th>
+                <th>Birthdate</th>
+                <th>Date of Appointment</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var guest in guests)
+            @if (Model.Guests != null && Model.Guests.Any())
+            {
+                foreach (var guest in Model.Guests)
+                {
+                    <tr>
+                        <td>@guest.Id</td>
+                        <td>@guest.Name</td>
+                        <td>@guest.Email</td>
+                        <td>@guest.Phone</td>
+                        <td>@guest.Address</td>
+                        <td>@guest.Birthdate.ToString("dd/MM/yyyy")</td>
+                        <td>@guest.DateOfAppintment.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <form asp-action="Delete" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@guest.Id" />
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@guest.Id</td>
-                    <td>@guest.Name</td>
-                    <td>@guest.Email</td>
-                    <td>@guest.Phone</td>
-                    <td>@guest.Address</td>
-                    <td>@guest.Birthdate.ToString("dd/MM/yyyy")</td>
-                    <td>@guest.DateOfAppintment</td>
-                    <td>
-                        <form asp-action="Delete" method="post">
-                            <input type="hidden" name="id" value="@guest.Id" />
-                            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
-                        </form>
-                    </td>
+                    <td colspan="8" class="text-center">No guests found</td>
                 </tr>
             }
         </tbody>
@@ -109,15 +119,10 @@
 </div>
 
 <script>
-    var passwordInput = document.querySelectorAll('input[type="password"]');
-document.getElementById("show-password").addEventListener("click", function(e) {
-       
-        passwordInput.forEach((el, idx) => {
-            if (el.type === "password") {
-                el.type = "text";
-            } else {
-                el.type = "password";
-            }
-        })
+    var passwordInputs = document.querySelectorAll('input[type="password"]');
+    document.getElementById("show-password").addEventListener("click", function () {
+        passwordInputs.forEach(input => {
+            input.type = (input.type === "password") ? "text" : "password";
+        });
     });
 </script>

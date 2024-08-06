@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using hendi.Models.Entities;
+using hendi.Models.ViewModels;
 using hendi.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace hendi.Controllers
 {
@@ -17,68 +19,115 @@ namespace hendi.Controllers
         public IActionResult Index()
         {
             var guests = _dbContext.Guests.ToList();
-            ViewBag.guests = guests;
-            return View();
+            var model = new GuestViewModel
+            {
+                Guests = guests
+            };
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            var guests = _dbContext.Guests.ToList();
-            ViewBag.guests = guests;
-            return View();
-        }
-
-
-        [HttpPost]
-        public IActionResult Add(Guest model)
-        {
-            if (ModelState.IsValid)
+            var model = new GuestViewModel
             {
-                if (model.Password != Request.Form["ConfirmPassword"])
-                {
-                    ModelState.AddModelError("Password", "Password does not match");
-                    ViewBag.guests = _dbContext.Guests.ToList();
-                    return View(model);
-                }
-
-                var existingGuest = _dbContext.Guests.Any(g => g.Email == model.Email);
-                if (existingGuest)
-                {
-                    ModelState.AddModelError("Email", "Email already exists");
-                    ViewBag.guests = _dbContext.Guests.ToList();
-                    return View(model);
-                }
-
-                string address = model.Address;
-                if (address != null && (address.Length > 15 || address.Length <= 3))
-                {
-                    ModelState.AddModelError("Address", "Address should be between 3 and 15 characters");
-                    ViewBag.guests = _dbContext.Guests.ToList();
-                    return View(model);
-                }
-
-                _dbContext.Guests.Add(model);
-                _dbContext.SaveChanges();
-
-                return RedirectToAction(nameof(Add));
-            }
-
-            ViewBag.guests = _dbContext.Guests.ToList();
+                Guests = _dbContext.Guests.ToList()
+            };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Add(GuestViewModel model)
         {
-            var guest = _dbContext.Guests.Find(id);
+            try
+            {
+                if (model.Guest.Password != Request.Form["ConfirmPassword"])
+                {
+                    ModelState.AddModelError("Guest.Password", "The password and confirmation password do not match.");
+                    model.Guests = _dbContext.Guests.ToList();
+                    return View(model);
+                }
+                if (ModelState.IsValid)
+                {
+                    _dbContext.Guests.Add(model.Guest);
+                    await _dbContext.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                model.Guests = _dbContext.Guests.ToList();
+                return View(model);
+
+            }catch
+            {
+                model.Guests = _dbContext.Guests.ToList();
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var guest = await _dbContext.Guests.FindAsync(id);
             if (guest != null)
             {
                 _dbContext.Guests.Remove(guest);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Add));
+            return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var guest = await _dbContext.Guests.FindAsync(id);
+            if (guest == null)
+            {
+                return NotFound();
+            }
+
+            var model = new GuestViewModel
+            {
+                Guest = guest,
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, GuestViewModel model)
+        {
+            if (id != model.Guest.Id)
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var existingGuest = await _dbContext.Guests.FindAsync(id);
+                if (existingGuest == null)
+                {
+                    return NotFound();
+                }
+                existingGuest.Name = model.Guest.Name;
+                existingGuest.Birthdate = model.Guest.Birthdate;
+                existingGuest.Phone = model.Guest.Phone;
+                existingGuest.Password = model.Guest.Password;
+                existingGuest.DateOfAppintment = model.Guest.DateOfAppintment;
+                existingGuest.Address = model.Guest.Address;
+
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            model.Guests = _dbContext.Guests.ToList();
+            return View(model);
+        }
+
+
     }
 }
