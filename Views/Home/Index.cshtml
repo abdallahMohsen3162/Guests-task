@@ -4,8 +4,6 @@
 }
 
 <div class="text-center">
-    @if (x)
-    {
-        <hi>true</hi>
-    }
+
+    @await Component.InvokeAsync("GuestTable")
 </div>

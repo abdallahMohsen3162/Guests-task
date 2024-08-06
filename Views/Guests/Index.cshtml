@@ -6,7 +6,8 @@
 <h1>Index</h1>
 
 <div class="container">
-    @await Html.PartialAsync("Components/_GuestTable", Model.Guests)
+    @await Component.InvokeAsync("GuestTable")
+
 </div>
 
 <a asp-action="Add" class="btn btn-primary">Create</a>
