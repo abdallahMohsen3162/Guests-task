@@ -4,6 +4,8 @@ using hendi.Models.ViewModels;
 using hendi.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 
 namespace hendi.Controllers
 {
@@ -99,35 +101,36 @@ namespace hendi.Controllers
             {
                 return BadRequest();
             }
-            //errors
 
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            var existingGuest = await _dbContext.Guests.FindAsync(id);
+            if (existingGuest == null)
             {
-                ModelState.AddModelError("", error.ErrorMessage);
-                Console.WriteLine(error.ErrorMessage);
+                return NotFound();
             }
-
-            if (ModelState.IsValid)
+            string existingPassword = existingGuest.Password;
+            if (string.IsNullOrEmpty(model.Guest.Password) && string.IsNullOrEmpty(model.Guest.confirmPassword))
             {
-                var existingGuest = await _dbContext.Guests.FindAsync(id);
-                if (existingGuest == null)
-                {
-                    return NotFound();
-                }
-                existingGuest.Name = model.Guest.Name;
-                existingGuest.Birthdate = model.Guest.Birthdate;
-                existingGuest.Phone = model.Guest.Phone;
-                existingGuest.Email = model.Guest.Email;
+                ModelState.Remove("Guest.Password");
+                ModelState.Remove("Guest.confirmPassword");
+            }
+            if (!ModelState.IsValid)
+            {
+                model.Guests = await _dbContext.Guests.ToListAsync();
+                return View(model);
+            }
+            existingGuest.Name = model.Guest.Name;
+            existingGuest.Birthdate = model.Guest.Birthdate;
+            existingGuest.Phone = model.Guest.Phone;
+            existingGuest.Email = model.Guest.Email;
+            existingGuest.DateOfAppintment = model.Guest.DateOfAppintment;
+            existingGuest.Address = model.Guest.Address;
+            if (!string.IsNullOrEmpty(model.Guest.Password) && model.Guest.Password != existingPassword)
+            {
                 existingGuest.Password = model.Guest.Password;
-                existingGuest.DateOfAppintment = model.Guest.DateOfAppintment;
-                existingGuest.Address = model.Guest.Address;
-
-                await _dbContext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
 
-            model.Guests = _dbContext.Guests.ToList();
-            return View(model);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 
