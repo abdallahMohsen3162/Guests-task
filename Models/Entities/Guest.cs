@@ -1,6 +1,7 @@
 ﻿using hendi.Models.Validation;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace hendi.Models.Entities
 {
@@ -19,6 +20,7 @@ namespace hendi.Models.Entities
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
+        [UniqueEmailForCreate(ErrorMessage = "Email already exists")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Phone number is required")]
@@ -28,6 +30,10 @@ namespace hendi.Models.Entities
         [Required(ErrorMessage = "Password is required")]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long")]
         public string Password { get; set; }
+
+        [NotMapped]
+        [ComparePasswords("Password", ErrorMessage = "Passwords do not match.")]
+        public string confirmPassword { get; set; }
 
         [Required(ErrorMessage = "Date of Appointment is required")]
         public DateOnly DateOfAppintment { get; set; }

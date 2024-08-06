@@ -1,14 +1,14 @@
 ﻿using hendi.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+
 namespace hendi.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options ) : base(options) 
-        { 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
 
         }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace hendi.Data
         }
 
         public DbSet<Student> students { get; set; }
-        public DbSet<Guest> Guests { get; set; }
 
+        public DbSet<Guest> Guests { get; set; }
     }
 }

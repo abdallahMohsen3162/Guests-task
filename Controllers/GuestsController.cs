@@ -40,29 +40,23 @@ namespace hendi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(GuestViewModel model)
         {
-            try
-            {
-                if (model.Guest.Password != Request.Form["ConfirmPassword"])
-                {
-                    ModelState.AddModelError("Guest.Password", "The password and confirmation password do not match.");
-                    model.Guests = _dbContext.Guests.ToList();
-                    return View(model);
-                }
-                if (ModelState.IsValid)
-                {
-                    _dbContext.Guests.Add(model.Guest);
-                    await _dbContext.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
+            
 
-                model.Guests = _dbContext.Guests.ToList();
-                return View(model);
-
-            }catch
+            foreach(var error in ModelState.Values.SelectMany(v => v.Errors))
             {
-                model.Guests = _dbContext.Guests.ToList();
-                return View(model);
+                ModelState.AddModelError("", error.ErrorMessage);
+                Console.WriteLine(error.ErrorMessage);
             }
+
+            if (ModelState.IsValid)
+            {
+                _dbContext.Guests.Add(model.Guest);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            model.Guests = _dbContext.Guests.ToList();
+            return View(model);
         }
 
         [HttpPost]
@@ -105,6 +99,13 @@ namespace hendi.Controllers
             {
                 return BadRequest();
             }
+            //errors
+
+            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            {
+                ModelState.AddModelError("", error.ErrorMessage);
+                Console.WriteLine(error.ErrorMessage);
+            }
 
             if (ModelState.IsValid)
             {
@@ -116,6 +117,7 @@ namespace hendi.Controllers
                 existingGuest.Name = model.Guest.Name;
                 existingGuest.Birthdate = model.Guest.Birthdate;
                 existingGuest.Phone = model.Guest.Phone;
+                existingGuest.Email = model.Guest.Email;
                 existingGuest.Password = model.Guest.Password;
                 existingGuest.DateOfAppintment = model.Guest.DateOfAppintment;
                 existingGuest.Address = model.Guest.Address;
