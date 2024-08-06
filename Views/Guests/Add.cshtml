@@ -42,8 +42,9 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label">Confirm Password</label>
-        <input  name="confirmPassword" class="form-control" type="password" />
+        <label asp-for="Guest.confirmPassword" class="control-label">Confirm Password</label>
+        <input asp-for="Guest.confirmPassword" class="form-control" type="password" />
+        <span asp-validation-for="Guest.confirmPassword" class="text-danger"></span>
         <button id="show-password" type="button" class="btn btn-dark">
             <i class="fa-regular fa-eye"></i>
         </button>
@@ -71,51 +72,8 @@
 <hr />
 
 <div class="container">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Birthdate</th>
-                <th>Date of Appointment</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Guests != null && Model.Guests.Any())
-            {
-                foreach (var guest in Model.Guests)
-                {
-                    <tr>
-                        <td>@guest.Id</td>
-                        <td>@guest.Name</td>
-                        <td>@guest.Email</td>
-                        <td>@guest.Phone</td>
-                        <td>@guest.Address</td>
-                        <td>@guest.Birthdate.ToString("dd/MM/yyyy")</td>
-                        <td>@guest.DateOfAppintment.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            <form asp-action="Delete" method="post" class="d-inline">
-                                <input type="hidden" name="id" value="@guest.Id" />
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa-solid fa-trash"></i> Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="8" class="text-center">No guests found</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @await Html.PartialAsync("Components/_GuestTable", Model.Guests)
+
 </div>
 
 <script>

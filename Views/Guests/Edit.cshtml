@@ -25,7 +25,7 @@
     </div>
     <div class="form-group">
         <label asp-for="Guest.Email" class="control-label"></label>
-        <input asp-for="Guest.Email" class="form-control" readonly />
+        <input asp-for="Guest.Email" class="form-control" />
         <span asp-validation-for="Guest.Email" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -33,10 +33,17 @@
         <input asp-for="Guest.Phone" class="form-control" />
         <span asp-validation-for="Guest.Phone" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Guest.Password" class="control-label"></label>
-        <input asp-for="Guest.Password" class="form-control" type="password" />
+        <label asp-for="Guest.Password"></label>
+        <input asp-for="Guest.Password" class="form-control" value="" />
         <span asp-validation-for="Guest.Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Guest.confirmPassword"></label>
+        <input asp-for="Guest.confirmPassword" class="form-control" />
+        <span asp-validation-for="Guest.confirmPassword" class="text-danger"></span>
     </div>
 
     <div class="form-group">
